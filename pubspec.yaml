@@ -9,8 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  location:
+    git:
+      url: https://github.com/Juggler98/flutterlocation
+      path: packages/location
+      ref: 1cc9cae16b9a58de74ffaf8113cb86e247d25739
+
   flutter_map: ^7.0.1
-  location: ^7.0.0
   http: ^1.1.0
   intl: ^0.19.0
   latlong2: ^0.9.0
