@@ -775,9 +775,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
           TileLayer(
             urlTemplate: widget.urlTemplate,
             subdomains: const ['a', 'b', 'c'],
-            tileProvider: CancellableNetworkTileProvider(
-              dioClient: Dio(BaseOptions()),
-            ),
+            tileProvider: NetworkTileProvider(),
           ),
           if (widget.showCurrentLocationPointer) _buildCurrentLocation(),
           ...widget.mapLayers,
