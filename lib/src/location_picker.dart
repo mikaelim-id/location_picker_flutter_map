@@ -779,6 +779,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
               dioClient: Dio(
                 BaseOptions(
                   sendTimeout: const Duration(seconds: 30),
+                  responseType: ResponseType.bytes,
                 ),
               ),
             ),
