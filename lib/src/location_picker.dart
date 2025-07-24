@@ -40,6 +40,8 @@ class FlutterLocationPicker extends StatefulWidget {
   ///
   final String urlTemplate;
 
+  final String userAgentPackageName;
+
   /// [mapLanguage] : (String) set the language of the map and address text (default = 'en')
   ///
   final String mapLanguage;
@@ -261,6 +263,7 @@ class FlutterLocationPicker extends StatefulWidget {
     this.maxZoomLevel = 18.4,
     this.maxBounds,
     this.urlTemplate = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    this.userAgentPackageName = 'unknown',
     this.mapLanguage = 'en',
     this.nominatimHost = 'nominatim.openstreetmap.org',
     this.nominatimZoomLevel,
@@ -771,6 +774,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
         mapController: _mapController,
         children: [
           TileLayer(
+            userAgentPackageName: widget.userAgentPackageName,
             urlTemplate: widget.urlTemplate,
             subdomains: const ['a', 'b', 'c'],
             tileProvider: NetworkTileProvider(),
