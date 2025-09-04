@@ -467,11 +467,11 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     queryParameters.addAll(widget.nominatimAdditionalQueryParameters ?? {});
     var uri = Uri.https(widget.nominatimHost, '/reverse', queryParameters);
 
-    // Add User-Agent header
+    String randomUserAgent = List.generate(16, (index) => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split('')[(DateTime.now().microsecondsSinceEpoch + index) % 62]).join();
     var response = await client.get(
       uri,
       headers: {
-        'User-Agent': widget.userAgentPackageName,
+        'User-Agent': randomUserAgent,
       },
     );
 
