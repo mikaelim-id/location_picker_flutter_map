@@ -432,17 +432,17 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
   /// location.
   ///  address (String): The address parameter represents the current address of the location.
   void onLocationChanged({required latLng, String? address}) {
-    pickData(latLng).then(
-      (PickedData pickedData) {
-        if (widget.onChanged != null) widget.onChanged!(pickedData);
-        // These two lines, and the onError callback below are the replacement =
-        // for the entire setNameCurrentPos function.
-        _searchController.text = address ?? pickedData.address;
-        setState(() {});
-      },
-    ).onError<Exception>((error, stackTrace) {
-      onError(error);
-    });
+    // pickData(latLng).then(
+    //   (PickedData pickedData) {
+    //     if (widget.onChanged != null) widget.onChanged!(pickedData);
+    //     // These two lines, and the onError callback below are the replacement =
+    //     // for the entire setNameCurrentPos function.
+    //     _searchController.text = address ?? pickedData.address;
+    //     setState(() {});
+    //   },
+    // ).onError<Exception>((error, stackTrace) {
+    //   onError(error);
+    // });
   }
 
   /// It takes the pointer of the map and sends a request to the OpenStreetMap API to get the address of
@@ -471,6 +471,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     queryParameters.addAll(widget.nominatimAdditionalQueryParameters ?? {});
     var uri = Uri.https(widget.nominatimHost, '/reverse', queryParameters);
     var response = await client.get(uri);
+    print(utf8.decode(response.bodyBytes));
     var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
     String displayName = "This Location is not accessible";
     Map<String, dynamic> address;
@@ -645,38 +646,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                   ),
                 ),
               ),
-              onChanged: (String value) {
-                if (_debounce?.isActive ?? false) {
-                  _debounce?.cancel();
-                }
-                setState(() {});
-                _debounce = Timer(
-                  widget.searchbarDebounceDuration ??
-                      const Duration(milliseconds: 500),
-                  () async {
-                    var client = http.Client();
-                    try {
-                      String url =
-                          'https://${widget.nominatimHost}/search?q=$value&format=json&polygon_geojson=1&addressdetails=1&accept-language=${widget.mapLanguage}${widget.countryFilter != null ? '&countrycodes=${widget.countryFilter}' : ''}';
-                      var response = await client.get(Uri.parse(url));
-                      var decodedResponse =
-                          jsonDecode(utf8.decode(response.bodyBytes))
-                              as List<dynamic>;
-                      _options = decodedResponse
-                          .map((e) => OSMdata(
-                              displayname: e['display_name'],
-                              latitude: double.parse(e['lat']),
-                              longitude: double.parse(e['lon'])))
-                          .toList();
-                      setState(() {});
-                    } on Exception catch (e) {
-                      onError(e);
-                    } finally {
-                      client.close();
-                    }
-                  },
-                );
-              },
+              onChanged: (String value) {},
             ),
             StatefulBuilder(
               builder: ((context, setState) {
