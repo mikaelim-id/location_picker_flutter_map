@@ -329,7 +329,6 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
   final FocusNode _focusNode = FocusNode();
   List<OSMdata> _options = <OSMdata>[];
   LatLong initPosition = const LatLong(30.0443879, 31.2357257);
-  Timer? _debounce;
   bool isLoading = true;
   late void Function(Exception e) onError;
 
@@ -457,9 +456,6 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
         ((isLoading || _animationController.isAnimating)
             ? 18
             : min(_mapController.camera.zoom.round(), 18));
-    // String url =
-    //     'https://${widget.nominatimHost}/reverse?format=json&lat=${center.latitude}&lon=${center.longitude}&zoom=$roundedZoom&addressdetails=1&accept-language=${widget.mapLanguage}';
-    // var uri = Uri.parse(url);
     Map<String, dynamic> queryParameters = {
       'format': 'json',
       'lat': center.latitude.toString(),
@@ -470,7 +466,15 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     };
     queryParameters.addAll(widget.nominatimAdditionalQueryParameters ?? {});
     var uri = Uri.https(widget.nominatimHost, '/reverse', queryParameters);
-    var response = await client.get(uri);
+
+    // Add User-Agent header
+    var response = await client.get(
+      uri,
+      headers: {
+        'User-Agent': widget.userAgentPackageName,
+      },
+    );
+
     print(utf8.decode(response.bodyBytes));
     var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
     String displayName = "This Location is not accessible";
