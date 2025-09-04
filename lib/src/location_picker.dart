@@ -780,15 +780,6 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
             subdomains: const ['a', 'b', 'c'],
             tileProvider: NetworkTileProvider(),
           ),
-          RichAttributionWidget(
-            attributions: [
-              TextSourceAttribution(
-                'OpenStreetMap contributors',
-                onTap: () => launchUrl(Uri.parse(
-                    'https://openstreetmap.org/copyright')),
-              ),
-            ],
-          ),
           if (widget.showCurrentLocationPointer) _buildCurrentLocation(),
           ...widget.mapLayers,
         ],
@@ -886,6 +877,15 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                 ),
               ],
               if (widget.showSelectLocationButton) _buildSelectButton(),
+              RichAttributionWidget(
+                attributions: [
+                  TextSourceAttribution(
+                    'OpenStreetMap contributors',
+                    onTap: () => launchUrl(
+                        Uri.parse('https://openstreetmap.org/copyright')),
+                  ),
+                ],
+              ),
             ],
           ),
         )
