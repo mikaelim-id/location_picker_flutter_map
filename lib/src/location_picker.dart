@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'classes.dart';
 import 'widgets/copyright_osm_widget.dart';
@@ -778,6 +779,15 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
             urlTemplate: widget.urlTemplate,
             subdomains: const ['a', 'b', 'c'],
             tileProvider: NetworkTileProvider(),
+          ),
+          RichAttributionWidget(
+            attributions: [
+              TextSourceAttribution(
+                'OpenStreetMap contributors',
+                onTap: () => launchUrl(Uri.parse(
+                    'https://openstreetmap.org/copyright')),
+              ),
+            ],
           ),
           if (widget.showCurrentLocationPointer) _buildCurrentLocation(),
           ...widget.mapLayers,
